@@ -1,0 +1,76 @@
+<!doctype html>
+<html lang="bn">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#142a40">
+  <title>HSC Preparation Tracker</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand"><div class="brand-mark">H</div><div><b>HSC Preparation Tracker</b><small>YOUR PERSONAL STUDY DASHBOARD</small></div></div>
+    <button id="logoutBtn" class="btn ghost hidden">লগআউট</button>
+  </header>
+
+  <main class="wrap">
+    <section id="authView" class="auth-layout">
+      <div class="intro">
+        <span class="eyebrow">HSC 2027 • STUDY SMARTER</span>
+        <h1>প্রস্তুতি হোক<br><em>পরিকল্পিত ও নিয়মিত।</em></h1>
+        <p>নিজের বিষয়, অধ্যায় ও পড়াশোনার অগ্রগতি এক জায়গায় গুছিয়ে রাখুন।</p>
+        <div class="feature-pills"><span>✓ ব্যক্তিগত অ্যাকাউন্ট</span><span>✓ অটোমেটিক হিসাব</span><span>✓ অনলাইনে সংরক্ষণ</span></div>
+      </div>
+      <div class="auth-card">
+        <div class="tabs"><button id="loginTab" class="tab active">লগইন</button><button id="signupTab" class="tab">নতুন অ্যাকাউন্ট</button></div>
+        <form id="authForm">
+          <label id="nameLabel" class="hidden">আপনার নাম<input id="studentName" autocomplete="name" placeholder="সম্পূর্ণ নাম"></label>
+          <label>ইমেইল<input id="email" type="email" autocomplete="email" required placeholder="name@example.com"></label>
+          <label>পাসওয়ার্ড<input id="password" type="password" minlength="6" autocomplete="current-password" required placeholder="কমপক্ষে ৬ অক্ষর"></label>
+          <button id="authSubmit" class="btn primary full" type="submit">লগইন করুন</button>
+          <p id="authMessage" class="message" role="status"></p>
+        </form>
+        <p class="tiny">আপনার ট্র্যাকার ব্যক্তিগত। অন্য শিক্ষার্থীরা আপনার অধ্যায়ের তথ্য দেখতে পারবে না।</p>
+      </div>
+    </section>
+
+    <section id="appView" class="hidden">
+      <div class="welcome-row">
+        <div><span class="eyebrow">YOUR DASHBOARD</span><h1>আসসালামু আলাইকুম, <span id="helloName">শিক্ষার্থী</span>!</h1><p>আজকের ছোট অগ্রগতিই আগামী দিনের বড় সাফল্য।</p></div>
+        <div class="batch-chip">HSC 2027</div>
+      </div>
+      <section class="summary-grid">
+        <article class="summary-card main-stat"><span>সামগ্রিক প্রস্তুতি</span><strong id="overallPct">0%</strong><div class="progress-track"><div id="overallBar" class="progress-fill"></div></div><small id="overallHint">আপনার অগ্রগতি এখানে দেখা যাবে</small></article>
+        <article class="summary-card"><span>মোট অধ্যায়</span><strong id="totalCount">0</strong><small>সব বিষয় মিলিয়ে</small></article>
+        <article class="summary-card"><span>সম্পন্ন</span><strong id="doneCount">0</strong><small>সব কাজ সম্পন্ন</small></article>
+        <article class="summary-card"><span>চলমান</span><strong id="progressCount">0</strong><small>কাজ শুরু হয়েছে</small></article>
+        <article class="summary-card"><span>শুরু হয়নি</span><strong id="notStartedCount">0</strong><small>এখনো কাজ বাকি</small></article>
+      </section>
+
+      <section class="panel">
+        <div class="section-head"><div><span class="eyebrow">SUBJECT OVERVIEW</span><h2>বিষয়ভিত্তিক প্রস্তুতি</h2></div></div>
+        <div id="subjectOverview" class="subject-overview"></div>
+      </section>
+
+      <section class="panel">
+        <div class="section-head chapter-head"><div><span class="eyebrow">CHAPTER MANAGEMENT</span><h2>অধ্যায় ট্র্যাকার</h2></div><div class="action-group"><button id="addSubjectBtn" class="btn ghost-dark">＋ বিষয় যোগ</button><button id="addChapterBtn" class="btn primary">＋ অধ্যায় যোগ করুন</button></div></div>
+        <div class="filters"><label>বিষয়<select id="subjectFilter"></select></label><label>খুঁজুন<input id="searchInput" placeholder="অধ্যায়ের নাম লিখুন"></label></div>
+        <div class="table-wrap"><table><thead><tr><th>অধ্যায়ের নাম</th><th>ক্লাস</th><th>CQ</th><th>MCQ</th><th>Admission</th><th>অন্যান্য</th><th>পরীক্ষা</th><th>ভুল সংশোধন</th><th>Progress</th><th>Status</th><th></th></tr></thead><tbody id="chapterRows"></tbody></table></div>
+        <p class="table-note">প্রতিটি ঘরে টিক দিলে অগ্রগতি স্বয়ংক্রিয়ভাবে আপডেট হবে।</p>
+      </section>
+    </section>
+  </main>
+
+  <dialog id="chapterDialog">
+    <form id="chapterForm" method="dialog" class="dialog-form">
+      <div class="section-head"><h2>নতুন অধ্যায় যোগ করুন</h2><button type="button" id="closeDialog" class="icon-btn">✕</button></div>
+      <label>বিষয়<select id="newSubject" required></select></label>
+      <label>অধ্যায়ের নাম<input id="newChapterName" required maxlength="120" placeholder="যেমন: প্রথম অধ্যায়"></label>
+      <div class="dialog-actions"><button type="button" id="cancelDialog" class="btn ghost">বাতিল</button><button type="submit" class="btn primary">সংরক্ষণ</button></div>
+    </form>
+  </dialog>
+  <dialog id="subjectDialog"><form id="subjectForm" method="dialog" class="dialog-form"><div class="section-head"><h2>নতুন বিষয় যোগ করুন</h2><button type="button" id="closeSubjectDialog" class="icon-btn">✕</button></div><label>বিষয়ের নাম<input id="newSubjectName" required maxlength="80" placeholder="যেমন: পদার্থবিজ্ঞান"></label><div class="dialog-actions"><button type="button" id="cancelSubjectDialog" class="btn ghost-dark">বাতিল</button><button type="submit" class="btn primary">সংরক্ষণ</button></div></form></dialog>
+  <footer>HSC Preparation Tracker <span>•</span> পড়াশোনার অগ্রগতি, আপনার নিয়ন্ত্রণে</footer>
+  <script type="module" src="app.js"></script>
+</body>
+</html>
